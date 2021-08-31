@@ -1,0 +1,60 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+<body>
+    <%- include("./partials/nav.ejs") %>
+    <div>
+      <form action="/currency" method="POST">
+          <label >From:</label>
+          <select name="cur1" id="cur1">
+              <% for(key in symbols) { %>
+                  <% if(symbols.hasOwnProperty(key)) { %>
+                      <option value=<%= key %>><%= key %></option>
+                  <% } %>
+              <% } %>
+          </select>
+          <input type="text" name="from" id="inputval">
+          <label >To:</label>
+          <select name="cur2" id="cur2">
+              <% for(key in symbols) { %>
+                  <% if(symbols.hasOwnProperty(key)) { %>
+                      <option value=<%= key %>><%= key %></option>
+                  <% } %>
+              <% } %>
+          </select>
+          <input id ='resbox' name="to"></input><br>
+          <input type="button" value="Convert" id="convertbtn">
+        </form>
+    </div>
+<script>
+    let ratesString = '<%-JSON.stringify(rates)%>';
+    let rates = JSON.parse(ratesString);
+
+    //let cur1 = $('#')
+    $('#convertbtn').click(()=>{
+        let cur1Name = $("#cur1 :selected").val();
+        let cur2Name = $("#cur2 :selected").val();
+
+        let cur1rate;
+        let cur2rate;
+        let inp = $("#inputval").val();
+
+        for(key in rates) { 
+            if(rates.hasOwnProperty(key)) {
+                if(cur1Name == key)
+                {
+                    cur1rate = rates[key];
+                }
+                if(cur2Name == key)
+                {
+                    cur2rate = rates[key];
+                }
+            }
+        }
+        $('#resbox').attr('value',inp * cur2rate/cur1rate);
+    })
+
+</script>
+<%- include("./partials/footer.ejs") %>
+</body>
+</html>
