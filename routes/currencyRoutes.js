@@ -20,6 +20,8 @@ var convertOptions = {
 
 var symbols;
 var rates;
+
+//Middleware to get names of currencies available on the database
 router.use((req, res,next) => {
     axios.request(symbolsOptions).then(function (response) {
         symbols = response.data.symbols;
@@ -29,10 +31,9 @@ router.use((req, res,next) => {
     });
 });
 
-
+//Middleware to get currencies rates
 router.use((req, res,next) => {
   axios.request(convertOptions).then(function (response) {
-    //result = req.body.from * response.data.rates[req.body.cur2]/response.data.rates[req.body.cur1];
     rates = response.data.rates;
     next();
   }).catch(function (error) {

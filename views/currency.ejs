@@ -3,29 +3,43 @@
 
 <body>
     <%- include("./partials/nav.ejs") %>
-    <div>
-      <form action="/currency" method="POST">
-          <label >From:</label>
-          <select name="cur1" id="cur1">
-              <% for(key in symbols) { %>
-                  <% if(symbols.hasOwnProperty(key)) { %>
-                      <option value=<%= key %>><%= key %></option>
-                  <% } %>
-              <% } %>
-          </select>
-          <input type="text" name="from" id="inputval">
-          <label >To:</label>
-          <select name="cur2" id="cur2">
-              <% for(key in symbols) { %>
-                  <% if(symbols.hasOwnProperty(key)) { %>
-                      <option value=<%= key %>><%= key %></option>
-                  <% } %>
-              <% } %>
-          </select>
-          <input id ='resbox' name="to"></input><br>
-          <input type="button" value="Convert" id="convertbtn">
-        </form>
+    <div class="container-fluid">
+        <form action="/currency" method="POST">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="cur1">From:</label>
+                        <select class="form-control" name="cur1" id="cur1">
+                            <% for(key in symbols) { %>
+                                <% if(symbols.hasOwnProperty(key)) { %>
+                                    <option value=<%= key %>>(<%= key %>) <%= symbols[key] %></option>
+                                <% } %>
+                            <% } %>
+                        </select>
+                        <input type="text" class="form-control" name="from"  placeholder="Amount" id="inputval">
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="cur2">To:</label>
+                        <select class="form-control" name="cur2" id="cur2">
+                            <% for(key in symbols) { %>
+                                <% if(symbols.hasOwnProperty(key)) { %>
+                                    <option value=<%= key %>>(<%= key %>) <%= symbols[key] %></option>
+                                <% } %>
+                            <% } %>
+                        </select>
+                        <input id ='resbox' class="form-control" placeholder="Result" name="to"></input><br>
+                    </div>
+                </div>
+              </div>
+
+            <input type="button" class="btn btn-info" value="Convert" id="convertbtn">
+            </form>
     </div>
+
 <script>
     let ratesString = '<%-JSON.stringify(rates)%>';
     let rates = JSON.parse(ratesString);
@@ -51,7 +65,7 @@
                 }
             }
         }
-        $('#resbox').attr('value',inp * cur2rate/cur1rate);
+        $('#resbox').attr('value',(inp * cur2rate/cur1rate).toFixed(2));
     })
 
 </script>
